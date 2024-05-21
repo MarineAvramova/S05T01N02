@@ -7,6 +7,6 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface FlowerMapper {
-    FlowerDTO flowerToFlowerDTO(Flower flower);
-    Flower flowerDTOToFlower(FlowerDTO flowerDTO);
+    FlowerDTO mapToFlowerDTO(Flower flower);
+    Flower mapToFlower(FlowerDTO flowerDTO);
 }

@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-05-11T20:41:03+0200",
+    date = "2024-05-21T11:02:38+0200",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 22 (Oracle Corporation)"
 )
 @Component
 public class FlowerMapperImpl implements FlowerMapper {
 
     @Override
-    public FlowerDTO flowerToFlowerDTO(Flower flower) {
+    public FlowerDTO mapToFlowerDTO(Flower flower) {
         if ( flower == null ) {
             return null;
         }
@@ -29,7 +29,7 @@ public class FlowerMapperImpl implements FlowerMapper {
     }
 
     @Override
-    public Flower flowerDTOToFlower(FlowerDTO flowerDTO) {
+    public Flower mapToFlower(FlowerDTO flowerDTO) {
         if ( flowerDTO == null ) {
             return null;
         }

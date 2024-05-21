@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 @Service
 public class FlowerServiceImplementation implements FlowerService{
@@ -18,31 +19,30 @@ public class FlowerServiceImplementation implements FlowerService{
 
     @Override
     public FlowerDTO createFlower(FlowerDTO flowerDTO) {
-        Flower flower = flowerMapper.flowerDTOToFlower(flowerDTO);
+        Flower flower = flowerMapper.mapToFlower(flowerDTO);
         Flower savedFlower = flowerRepository.save(flower);
-        return flowerMapper.flowerToFlowerDTO(savedFlower);
+        return flowerMapper.mapToFlowerDTO(savedFlower);
     }
 
     @Override
-    public FlowerDTO getFlowerById(Integer pk_FlowerId) {
-        Flower flower = flowerRepository.findById(pk_FlowerId).get();
-        return flowerMapper.flowerToFlowerDTO(flower);
+    public Optional<FlowerDTO> getFlowerById(Integer pk_FlowerId) {
+        return flowerRepository.findById(pk_FlowerId)
+                .map(flowerMapper::mapToFlowerDTO);
     }
 
     @Override
     public List<FlowerDTO> getAllFlowers() {
         List<Flower>flowers = flowerRepository.findAll();
-        return flowers.stream().map(flowerMapper::flowerToFlowerDTO)
+        return flowers.stream().map(flowerMapper::mapToFlowerDTO)
                 .collect(Collectors.toList());
     }
-
     @Override
-    public FlowerDTO updateFlower(FlowerDTO flowerDTO) {
-        Flower existingFlower = flowerRepository.findById(flowerDTO.getPk_FlowerId()).get();
-        existingFlower.setNameFlower(flowerDTO.getNameFlower());
-        existingFlower.setCountryFlower(flowerDTO.getCountryFlower());
-        Flower updatedFlower = flowerRepository.save(existingFlower);
-        return flowerMapper.flowerToFlowerDTO(updatedFlower);
+    public FlowerDTO updateFlower(FlowerDTO flower) {
+        Flower optionalFlower = flowerRepository.findById(flower.getPk_FlowerId()).orElseThrow();
+        optionalFlower.setNameFlower(flower.getNameFlower());
+        optionalFlower.setCountryFlower(flower.getCountryFlower());
+        flowerRepository.save(optionalFlower);
+        return flowerMapper.mapToFlowerDTO(optionalFlower);
     }
 
     @Override
